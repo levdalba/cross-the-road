@@ -12,13 +12,24 @@ scoreboard = Scoreboard()
 screen.setup(width=600, height=600)
 screen.bgcolor("white")
 screen.listen()
-screen.onkey(player.up, "Up")
-screen.onkey(player.down, "Down")
+screen.onkey(player.move, "Up")
 game_is_on = True
 while game_is_on:
     time.sleep(0.1)
     screen.update()
-    player.move()
+    player.turn_left()
+    if screen.onkey(player.move, "Up"):
+        player.move()
+    car_manager.create_car()
+    car_manager.move_cars()
+    for car in car_manager.all_cars:
+        if car.distance(player) < 20:
+            scoreboard.game_over()
+            game_is_on = False
+    if player.ycor() > 280:
+        player.reset_position()
+        car_manager.level_up()
+        scoreboard.increase_score()
 
 
 screen.exitonclick()
