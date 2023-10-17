@@ -22,10 +22,11 @@ while game_is_on:
         player.move()
     car_manager.create_car()
     car_manager.move_cars()
-    for car in car_manager.all_cars:
-        if car.distance(player) < 20:
-            scoreboard.game_over()
-            game_is_on = False
+    if car_manager.collision(player):
+        scoreboard.reset_score()
+        player.reset_position()
+        car_manager.reset_cars()
+        car_manager.car_speed = 5
     if player.ycor() > 280:
         player.reset_position()
         car_manager.level_up()

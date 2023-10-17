@@ -27,3 +27,9 @@ class CarManager:
 
     def level_up(self):
         self.car_speed += MOVE_INCREMENT
+
+    def collision(self, player):
+        for car in self.all_cars:
+            if car.distance(player) < 20:
+                return True
+        return False
