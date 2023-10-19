@@ -10,10 +10,12 @@ class CarManager:
     def __init__(self):
         self.all_cars = []
         self.car_speed = STARTING_MOVE_DISTANCE
-        self.car_creation_chance = 1
+        self.car_creation_counter = 0
+        self.car_creation_interval = 6
 
     def create_car(self):
-        if random.randint(1, 6) == self.car_creation_chance:
+        self.car_creation_counter += 1
+        if self.car_creation_counter % self.car_creation_interval == 0:
             new_car = Turtle("square")
             new_car.shapesize(stretch_wid=1, stretch_len=2)
             new_car.color(random.choice(COLORS))
@@ -23,12 +25,14 @@ class CarManager:
             self.all_cars.append(new_car)
 
     def move_cars(self):
+        self.create_car()
+
         for car in self.all_cars:
             car.backward(self.car_speed)
 
     def level_up(self):
         self.car_speed += MOVE_INCREMENT
-        self.car_creation_chance += 1
+        self.car_creation_interval -= 1
 
     def collision(self, player):
         for car in self.all_cars:
